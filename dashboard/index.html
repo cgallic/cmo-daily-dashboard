@@ -1,0 +1,225 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>CMO Daily — Command Center</title>
+<style>
+:root{
+  --bg:#090e1a;--panel:#0d1426;--card:#111b30;--border:#1e2d4a;
+  --ink:#dde3f0;--mut:#5a7099;--acc:#4f8ef7;
+  --green:#22c55e;--yellow:#eab308;--red:#ef4444;--purple:#a78bfa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:13px/1.5 -apple-system,"Segoe UI",sans-serif;
+      height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+/* header */
+header{padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;
+        display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.logo span{color:var(--acc)}
+.run-info{font-size:11px;color:var(--mut);margin-left:auto}
+.badge{display:inline-flex;align-items:center;gap:4px;background:var(--card);
+        border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-size:11px}
+
+/* channel-health strip */
+.strip{display:flex;flex-wrap:wrap;gap:5px;padding:7px 16px;
+        border-bottom:1px solid var(--border);flex-shrink:0}
+.chip{font-size:10px;border:1px solid var(--c,#475569);border-radius:20px;
+       padding:2px 9px;color:var(--c,#475569);background:var(--bg);
+       white-space:nowrap;display:inline-flex;align-items:center;gap:4px;cursor:default}
+.chip-dot{width:5px;height:5px;border-radius:50%;background:var(--c,#475569);flex-shrink:0}
+
+/* two-column main */
+.main{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);
+       flex:1;overflow:hidden;min-height:0}
+.col{background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.col-hd{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;
+         letter-spacing:.6px;color:var(--mut);border-bottom:1px solid var(--border);
+         flex-shrink:0}
+.col-hd b{color:var(--ink);font-size:14px}
+.col-body{overflow-y:auto;flex:1;padding:8px}
+
+/* loop sections (right col) */
+.loop-section{margin-bottom:12px}
+.loop-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+          color:var(--mut);padding:4px 6px;display:flex;align-items:center;gap:6px}
+.loop-count{background:var(--card);border:1px solid var(--border);border-radius:10px;
+             padding:0 6px;font-size:10px;color:var(--ink)}
+
+/* item cards */
+.item{background:var(--card);border:1px solid var(--border);border-radius:8px;
+       padding:9px 11px;margin-bottom:5px;border-left:3px solid var(--border)}
+.item.approve{border-left-color:#f59e0b}
+.item.staged{border-left-color:#7c3aed;background:#0e0d1f}
+.item.todo{border-left-color:var(--acc)}
+
+.item-top{display:flex;align-items:flex-start;gap:7px}
+.sc{font-size:10px;font-weight:800;min-width:28px;text-align:center;
+     border-radius:5px;padding:2px 4px;flex-shrink:0;margin-top:1px}
+.s-crit{background:#1a2e1a;color:#4ade80}
+.s-high{background:#1c2e20;color:#86efac}
+.s-med{background:#1c2535;color:#93c5fd}
+.s-low{background:#1a1a22;color:var(--mut)}
+
+.type-dot{font-size:9px;color:var(--mut);flex-shrink:0;margin-top:3px}
+.item-title{font-weight:600;font-size:12.5px;flex:1;line-height:1.3}
+.item-tag{font-size:9px;font-weight:700;letter-spacing:.4px;color:var(--mut);
+           border:1px solid var(--border);border-radius:5px;padding:1px 6px;
+           flex-shrink:0;margin-left:6px;white-space:nowrap}
+.item.staged .item-tag{color:#c4b5fd;border-color:#7c3aed}
+.item.approve .item-tag{color:#fbbf24;border-color:#f59e0b}
+.item.todo .item-tag{color:#93c5fd;border-color:var(--acc)}
+
+.item-meta{font-size:10px;color:var(--mut);margin:3px 0 4px 35px}
+.item-body{font-size:11.5px;color:#94a3b8;margin-left:35px;
+            white-space:pre-wrap;line-height:1.45;max-height:160px;overflow-y:auto}
+.item-cmd{margin:6px 35px 0;background:#0a1020;border:1px solid #1e3a5f;
+           border-radius:5px;padding:5px 8px;overflow-x:auto}
+.item-cmd code{font:12px/1.4 "Fira Code","Cascadia Code",monospace;
+                color:#60a5fa;white-space:nowrap}
+
+.empty{color:var(--mut);font-size:12px;padding:10px 8px;font-style:italic}
+footer{padding:6px 16px;border-top:1px solid var(--border);flex-shrink:0;
+        font-size:10px;color:var(--mut)}
+</style></head><body>
+
+<header>
+  <div class=logo><span>CMO</span> Daily</div>
+  <div class=badge>&#128197; 2026-01-15</div>
+  <div class=badge>&#9889; 3 to approve</div>
+  <div class=badge>&#128203; 7 to do</div>
+  <div class=badge>&#128225; 11 channels</div>
+  <div class=run-info>mode: dry-run &nbsp;&middot;&nbsp; static build &middot; display-only</div>
+</header>
+
+<div class=strip><span class="chip" style="--c:#22c55e" title="demo data: 40 posts live; 2 published this week"><span class="chip-dot"></span>blog seo product a: consistent</span><span class="chip" style="--c:#22c55e" title="demo data: daily scored opportunities page regenerating"><span class="chip-dot"></span>community forum: consistent</span><span class="chip" style="--c:#22c55e" title="demo data: last upload 1.2d ago; weekly cadence holding"><span class="chip-dot"></span>youtube product a: consistent</span><span class="chip" style="--c:#22c55e" title="demo data: 2 active campaigns; CTR within target band"><span class="chip-dot"></span>ads paid product a: running</span><span class="chip" style="--c:#eab308" title="demo data: last send 9d ago; cadence slipping"><span class="chip-dot"></span>newsletter product a: intermittent</span><span class="chip" style="--c:#eab308" title="demo data: last post 3d ago; drip queue half full"><span class="chip-dot"></span>tiktok product b: intermittent</span><span class="chip" style="--c:#a78bfa" title="demo data: pages live but per-post cadence not provable from sitemap"><span class="chip-dot"></span>blog seo product b: unverified</span><span class="chip" style="--c:#ef4444" title="demo data: no sends in 14d; pipeline empty"><span class="chip-dot"></span>outreach pr: stalled</span><span class="chip" style="--c:#f59e0b" title="demo data: no posting automation (skeleton built, login pending)"><span class="chip-dot"></span>linkedin product b: no_driver</span><span class="chip" style="--c:#f59e0b" title="demo data: no driver yet (skeleton building); high-value for visual content"><span class="chip-dot"></span>pinterest experimental: no_driver</span><span class="chip" style="--c:#334155" title="demo data: paused — enough inventory produced"><span class="chip-dot"></span>shorts pipeline: deprioritized</span></div>
+
+<div class=main>
+  <div class=col>
+    <div class=col-hd>&#9889; Approve / Review &nbsp;<b>3</b></div>
+    <div class=col-body><div class="item approve" data-id="2026-01-15-ads-002">
+  <div class="item-top">
+    <span class="sc s-high">78</span>
+    <span class="type-dot" title="task">●</span>
+    <div class="item-title">Pause underperforming ad set (demo data)</div>
+    <span class="item-tag">NEEDS APPROVAL</span>
+  </div>
+  <div class="item-meta">Ads &rarr; ads paid product a</div>
+  <div class="item-body">Ad set &#x27;PingDesk-retarget-2&#x27; demo CPA is 2.1x the account target over the last 7d. Recommend pausing and reallocating budget to the top performer.</div>
+  <div class="item-cmd"><code>ads pause --campaign demo-client/pingdesk --adset retarget-2  # display-only</code></div>
+</div><div class="item approve" data-id="2026-01-15-health-009">
+  <div class="item-top">
+    <span class="sc s-high">73</span>
+    <span class="type-dot" title="task">●</span>
+    <div class="item-title">Confirm conversion tracking after deploy (demo data)</div>
+    <span class="item-tag">NEEDS APPROVAL</span>
+  </div>
+  <div class="item-meta">Product Health &rarr; ads paid product a</div>
+  <div class="item-body">A recent landing-page deploy may have affected the conversion pixel. Verify events are firing before the next ad spend cycle.</div>
+  <div class="item-cmd"><code>verify pixel --site demo-client/product-a  # display-only</code></div>
+</div><div class="item staged" data-id="2026-01-15-blog-006">
+  <div class="item-top">
+    <span class="sc s-high">69</span>
+    <span class="type-dot" title="task">●</span>
+    <div class="item-title">Publish drafted comparison post (demo data)</div>
+    <span class="item-tag">STAGED</span>
+  </div>
+  <div class="item-meta">Traffic &amp; SEO &rarr; blog seo product b</div>
+  <div class="item-body">A &#x27;PingDesk vs alternatives&#x27; comparison draft is review-ready. Approve to publish to the product_b blog.</div>
+  <div class="item-cmd"><code>blog publish --site demo-client/product-b --slug pingdesk-vs-alternatives  # display-only</code></div>
+</div></div>
+  </div>
+  <div class=col>
+    <div class=col-hd>&#128203; Do today &nbsp;<b>7</b></div>
+    <div class=col-body><section class="loop-section">
+  <div class="loop-hd">Revenue &amp; Leads <span class="loop-count">1</span></div>
+  <div class="item todo" data-id="2026-01-15-leads-001">
+  <div class="item-top">
+    <span class="sc s-crit">84</span>
+    <span class="type-dot" title="suggestion">○</span>
+    <div class="item-title">Inbound leads down week-over-week (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Revenue &amp; Leads &rarr; leads</div>
+  <div class="item-body">PingDesk inbound dropped to 22 leads (7d) vs 31 prior (demo data). Decline concentrated in organic search. Worth a look before it compounds.</div>
+  <div class="item-cmd"><code>Review GSC query drop for the top 3 landing pages.</code></div>
+</div>
+</section><section class="loop-section">
+  <div class="loop-hd">Traffic &amp; SEO <span class="loop-count">1</span></div>
+  <div class="item todo" data-id="2026-01-15-seo-003">
+  <div class="item-top">
+    <span class="sc s-high">71</span>
+    <span class="type-dot" title="suggestion">○</span>
+    <div class="item-title">Striking-distance keyword on page 2 (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Traffic &amp; SEO &rarr; blog seo product a</div>
+  <div class="item-body">&#x27;team inbox automation&#x27; sits at demo position 12 with rising impressions. A focused internal-link + intro refresh could push it onto page 1.</div>
+  
+</div>
+</section><section class="loop-section">
+  <div class="loop-hd">Distribution <span class="loop-count">2</span></div>
+  <div class="item todo" data-id="2026-01-15-content-004">
+  <div class="item-top">
+    <span class="sc s-high">66</span>
+    <span class="type-dot" title="task">●</span>
+    <div class="item-title">Newsletter cadence slipped — schedule next issue (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Distribution &rarr; newsletter product a</div>
+  <div class="item-body">Last send was 9d ago (demo data) against a weekly target. Draft and queue the next PingDesk product-update issue.</div>
+  
+</div><div class="item todo" data-id="2026-01-15-social-005">
+  <div class="item-top">
+    <span class="sc s-med">62</span>
+    <span class="type-dot" title="suggestion">○</span>
+    <div class="item-title">Top demo clip ready to repurpose (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Distribution &rarr; tiktok product b</div>
+  <div class="item-body">A long-form clip pulled demo-strong watch-time. Cut a 20s vertical and stage it in the drip queue for product_b.</div>
+  
+</div>
+</section><section class="loop-section">
+  <div class="loop-hd">Outreach <span class="loop-count">2</span></div>
+  <div class="item todo" data-id="2026-01-15-outreach-007">
+  <div class="item-top">
+    <span class="sc s-med">58</span>
+    <span class="type-dot" title="suggestion">○</span>
+    <div class="item-title">PR outreach pipeline is empty (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Outreach &rarr; outreach pr</div>
+  <div class="item-body">No outreach sends in 14d (demo data). Refill the prospect list before the channel goes fully dark.</div>
+  
+</div><div class="item todo" data-id="2026-01-15-community-008">
+  <div class="item-top">
+    <span class="sc s-med">55</span>
+    <span class="type-dot" title="suggestion">○</span>
+    <div class="item-title">High-fit forum thread to reply to (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Outreach &rarr; community forum</div>
+  <div class="item-body">A community thread scored demo 82 for fit (&#x27;how do you triage support calls?&#x27;). Manual reply recommended — no auto-posting.</div>
+  
+</div>
+</section><section class="loop-section">
+  <div class="loop-hd">Weekly Review <span class="loop-count">1</span></div>
+  <div class="item todo" data-id="2026-01-15-weekly-010">
+  <div class="item-top">
+    <span class="sc s-med">51</span>
+    <span class="type-dot" title="suggestion">○</span>
+    <div class="item-title">Stand up LinkedIn posting driver (demo data)</div>
+    <span class="item-tag">TODAY</span>
+  </div>
+  <div class="item-meta">Weekly Review &rarr; linkedin product b</div>
+  <div class="item-body">LinkedIn for product_b has no driver yet — highest untapped surface in the demo plan. Skeleton exists; login still pending.</div>
+  
+</div>
+</section></div>
+  </div>
+</div>
+
+<footer>Read-only command center. Numbers shown are <b>demo data</b>.
+Execution belongs to a separate approval-inbox — this surface is display-only.</footer>
+
+</body></html>

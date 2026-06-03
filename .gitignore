@@ -1,0 +1,31 @@
+# secrets / env
+.env
+.env.*
+!.env.example
+
+# local store + mirrors generated at runtime
+*.db
+*.db-wal
+*.db-shm
+/inbox.jsonl
+/STATE.json
+
+# run artifacts
+data/
+runs/
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# node (in case anyone adds tooling)
+node_modules/
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,88 @@
+{
+  "_comment": "Fictional demo channel-health snapshot for the sample product 'PingDesk'. All numbers are invented demo data. Tracks are generic: product_a, product_b, experimental.",
+  "as_of": "2026-01-15T09:30:00+00:00",
+  "tracks": {
+    "product_a":    { "priority": "P1", "share": 0.7 },
+    "product_b":    { "priority": "P2", "share": 0.3 },
+    "experimental": { "priority": "P3" }
+  },
+  "channels": {
+    "youtube_product_a": {
+      "track": "product_a",
+      "status": "consistent",
+      "driver": "static_uploader",
+      "evidence": "demo data: last upload 1.2d ago; weekly cadence holding",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "blog_seo_product_a": {
+      "track": "product_a",
+      "status": "consistent",
+      "driver": "content_writer",
+      "evidence": "demo data: 40 posts live; 2 published this week",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "ads_paid_product_a": {
+      "track": "product_a",
+      "status": "running",
+      "driver": "ads_api",
+      "evidence": "demo data: 2 active campaigns; CTR within target band",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "newsletter_product_a": {
+      "track": "product_a",
+      "status": "intermittent",
+      "driver": "manual",
+      "evidence": "demo data: last send 9d ago; cadence slipping",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "tiktok_product_b": {
+      "track": "product_b",
+      "status": "intermittent",
+      "driver": "manual+drip",
+      "evidence": "demo data: last post 3d ago; drip queue half full",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "blog_seo_product_b": {
+      "track": "product_b",
+      "status": "unverified",
+      "driver": "content_writer",
+      "evidence": "demo data: pages live but per-post cadence not provable from sitemap",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "linkedin_product_b": {
+      "track": "product_b",
+      "status": "no_driver",
+      "driver": null,
+      "evidence": "demo data: no posting automation (skeleton built, login pending)",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "community_forum": {
+      "track": "experimental",
+      "status": "consistent",
+      "driver": "digest",
+      "evidence": "demo data: daily scored opportunities page regenerating",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "outreach_pr": {
+      "track": "experimental",
+      "status": "stalled",
+      "driver": "ledger",
+      "evidence": "demo data: no sends in 14d; pipeline empty",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "pinterest_experimental": {
+      "track": "experimental",
+      "status": "no_driver",
+      "driver": null,
+      "evidence": "demo data: no driver yet (skeleton building); high-value for visual content",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    },
+    "shorts_pipeline": {
+      "track": "experimental",
+      "status": "deprioritized",
+      "driver": "disabled",
+      "evidence": "demo data: paused — enough inventory produced",
+      "updated_at": "2026-01-15T09:30:00+00:00"
+    }
+  }
+}
