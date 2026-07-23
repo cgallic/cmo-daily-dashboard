@@ -102,3 +102,8 @@ orchestrator uses to write `items` and `state` rows.
 ## License
 
 MIT — see [`LICENSE`](LICENSE).
+
+
+---
+
+*Built and maintained by [Connor Gallic](https://pr.linkedin.com/in/cgallic) — connect on LinkedIn.*
